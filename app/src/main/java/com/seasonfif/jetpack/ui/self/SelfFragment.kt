@@ -9,8 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.seasonfif.jetpack.R
+import com.seasonfif.jetpack.base.BaseFragment
 
-class SelfFragment : Fragment() {
+class SelfFragment : BaseFragment() {
 
     private lateinit var selfViewModel: SelfViewModel
 

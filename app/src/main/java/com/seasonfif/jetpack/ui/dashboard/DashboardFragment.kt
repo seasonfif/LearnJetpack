@@ -9,8 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.seasonfif.jetpack.R
+import com.seasonfif.jetpack.base.BaseFragment
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : BaseFragment() {
 
     private lateinit var dashboardViewModel: DashboardViewModel
 

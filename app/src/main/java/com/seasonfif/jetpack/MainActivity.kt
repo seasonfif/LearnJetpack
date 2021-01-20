@@ -1,5 +1,6 @@
 package com.seasonfif.jetpack
 
+import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.design.bottomnavigation.LabelVisibilityMode
 import android.support.design.widget.BottomNavigationView
@@ -11,11 +12,16 @@ import com.seasonfif.jetpack.ui.home.HomeFragment
 import com.seasonfif.jetpack.ui.notifications.NotificationsFragment
 import com.seasonfif.jetpack.ui.self.SelfFragment
 import com.seasonfif.jetpack.view.ViewPagerAdapter
+import com.seasonfif.jetpack.viewmodel.OverallVM
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var pagerAdapter: ViewPagerAdapter
+
+    private val overallVM by lazy {
+        ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(OverallVM::class.java)
+    }
 
     private val itemSelectedListener : BottomNavigationView.OnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener {
@@ -27,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.navigation_message->{
                     pager.currentItem = 1
+                    overallVM.getTag().value = "hahaha---message"
                     return@OnNavigationItemSelectedListener true
                 }
 
@@ -37,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.navigation_self->{
                     pager.currentItem = 3
+                    overallVM.getTag().value = "hahaha---self"
                     return@OnNavigationItemSelectedListener true
                 }
 
@@ -73,6 +81,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        overallVM.getTag().value = "hahaha"
 
         pagerAdapter = ViewPagerAdapter(supportFragmentManager)
         pagerAdapter.addFragment(HomeFragment.newInstance())
