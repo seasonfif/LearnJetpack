@@ -3,7 +3,7 @@ package com.seasonfif.jetpack.viewmodel
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
-import com.seasonfif.jetpack.bean.MapData
+import com.seasonfif.jetpack.bean.SellData
 import com.seasonfif.jetpack.repository.OnSellRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -18,7 +18,7 @@ class OnSellVM: ViewModel() {
     private val viewModelJob = SupervisorJob()
     private val viewModelScope = CoroutineScope(viewModelJob)
 
-    val contentList = MutableLiveData<List<MapData>>()
+    val contentList = MutableLiveData<List<SellData>>()
 
     private val onSellRepository by lazy {
         OnSellRepository()
@@ -38,7 +38,7 @@ class OnSellVM: ViewModel() {
 
     private fun loadListByPage() {
         viewModelScope.launch {
-            val apiData = onSellRepository.getOnSellList(currentPage).getApiData()
+            val apiData = onSellRepository.getOnSellList(currentPage, true)
             val mapDataList = apiData.tbk_dg_optimus_material_response.result_list.map_data
             Log.e("data size == ", "" + mapDataList.size)
             contentList.postValue(mapDataList)

@@ -60,10 +60,10 @@ data class TbkDgOptimusMaterialResponse(
 )
 
 data class ResultList(
-    var map_data: List<MapData>
+    var map_data: List<SellData>
 )
 
-data class MapData(
+data class SellData(
     var category_id: Int,
     var category_name: Any,
     var click_url: String,
