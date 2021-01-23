@@ -10,10 +10,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.seasonfif.jetpack.R
 import com.seasonfif.jetpack.base.BaseFragment
+import com.seasonfif.jetpack.bean.MapData
+import com.seasonfif.jetpack.viewmodel.OnSellVM
 
 class DashboardFragment : BaseFragment() {
 
     private lateinit var dashboardViewModel: DashboardViewModel
+
+    private val onSellVM by lazy {
+        ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(OnSellVM::class.java)
+    }
 
     companion object{
         fun newInstance(): Fragment{
@@ -37,6 +43,18 @@ class DashboardFragment : BaseFragment() {
         dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
+
+        /*val onSellVM = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(OnSellVM::class.java)*/
+
+        onSellVM.refresh()
+        onSellVM.contentList.observe(this,
+            Observer<List<MapData>> {
+                textView.text = it?.get(0)?.click_url
+            })
+
         return root
     }
 }
