@@ -13,18 +13,18 @@ import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.seasonfif.jetpack.R
 import com.seasonfif.jetpack.base.BaseFragment
-import com.seasonfif.jetpack.bean.SellData
-import com.seasonfif.jetpack.viewmodel.OnSellVM
+import com.seasonfif.jetpack.bean.ProjectItem
+import com.seasonfif.jetpack.viewmodel.HotProjectVM
 
 class DashboardFragment : BaseFragment() {
 
     private lateinit var dashboardViewModel: DashboardViewModel
     private lateinit var refreshLayout: SmartRefreshLayout
     private lateinit var recycler: RecyclerView
-    private lateinit var sellAdapter: SellAdapter
+    private lateinit var hotProjectAdapter: HotProjectAdapter
 
-    private val onSellVM by lazy {
-        ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(OnSellVM::class.java)
+    private val hotProjectVM by lazy {
+        ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(HotProjectVM::class.java)
     }
 
     companion object{
@@ -51,27 +51,27 @@ class DashboardFragment : BaseFragment() {
         refreshLayout.setRefreshHeader(ClassicsHeader(activity))
         refreshLayout.setEnableRefresh(true)
         refreshLayout.setOnRefreshListener {
-            onSellVM.refresh()
-            onSellVM.contentList.observe(this,
-                Observer<List<SellData>> {
+            hotProjectVM.refresh()
+            hotProjectVM.contentList.observe(this,
+                Observer<List<ProjectItem>> {
                     if (it?.size!! > 0){
                         refreshLayout.finishRefresh(true)
                     }else{
                         refreshLayout.finishRefresh(false)
                     }
-                    sellAdapter.setNewData(it)
+                    hotProjectAdapter.setNewData(it)
                 })
         }
         recycler.layoutManager = LinearLayoutManager(activity)
 
-        sellAdapter = SellAdapter(R.layout.item_onsell)
+        hotProjectAdapter = HotProjectAdapter(R.layout.item_hot_project)
 
-        recycler.adapter = sellAdapter
+        recycler.adapter = hotProjectAdapter
 
-        onSellVM.refresh()
-        onSellVM.contentList.observe(this,
-            Observer<List<SellData>> {
-                sellAdapter.setNewData(it)
+        hotProjectVM.refresh()
+        hotProjectVM.contentList.observe(this,
+            Observer<List<ProjectItem>> {
+                hotProjectAdapter.setNewData(it)
             })
 
         return root

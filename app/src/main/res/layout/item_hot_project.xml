@@ -12,7 +12,6 @@
     app:cardUseCompatPadding="true">
 
     <android.support.constraint.ConstraintLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -48,7 +47,7 @@
             app:layout_constraintGuide_begin="35dp" />
 
         <TextView
-            android:id="@+id/shop_nick"
+            android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -62,36 +61,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/item_desc"
+            android:id="@+id/desc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:maxLines="4"
+            android:text="采用 Kotlin 语言编写，结合 MVVM + 协程 + Retrofit + Glide + JetPack部分功能 等架构设计的项目，项目代码结构清晰，如有任何疑问和建议请提 Issues 或联系 qq： 1510931535 ，项目会持续迭代维护。"
+            android:textSize="15dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:maxLines="2"
-            android:text="TextView"
-            android:textSize="15dp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toTopOf="@+id/guideline5" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="85dp" />
-
-        <TextView
-            android:id="@+id/item_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:maxLines="2"
-            android:text="TextView"
-            android:textSize="15dp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline5"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toTopOf="@+id/guideline4" />

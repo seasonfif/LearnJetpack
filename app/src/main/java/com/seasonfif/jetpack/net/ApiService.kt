@@ -1,12 +1,12 @@
 package com.seasonfif.jetpack.net
 
-import com.seasonfif.jetpack.bean.OnSellData
+import com.seasonfif.jetpack.bean.ProjectData
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface ApiService {
 
-    @GET("onSell/{page}")
-    suspend fun getOnSellList(@Path("page") page: Int): ResultData<OnSellData>
+    @GET("project/list/{page}/json?cid=294")
+    suspend fun getHotProjectList(@Path("page") page: Int): ResultEntry<ProjectData>
 
 }
