@@ -1,22 +1,17 @@
 package com.seasonfif.jetpack.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
 import android.util.Log
+import com.seasonfif.jetpack.base.BaseViewModel
 import com.seasonfif.jetpack.bean.SellData
 import com.seasonfif.jetpack.repository.OnSellRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-class OnSellVM: ViewModel() {
+class OnSellVM: BaseViewModel() {
 
     companion object {
         const val DEFAULT_PAGE = 1
     }
-
-    private val viewModelJob = SupervisorJob()
-    private val viewModelScope = CoroutineScope(viewModelJob)
 
     val contentList = MutableLiveData<List<SellData>>()
 
@@ -44,10 +39,4 @@ class OnSellVM: ViewModel() {
             contentList.postValue(mapDataList)
         }
     }
-
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob?.cancel()
-    }
-
 }
