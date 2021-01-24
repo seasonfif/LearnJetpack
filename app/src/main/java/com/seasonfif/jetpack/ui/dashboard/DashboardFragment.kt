@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +16,11 @@ import com.seasonfif.jetpack.R
 import com.seasonfif.jetpack.base.BaseFragment
 import com.seasonfif.jetpack.bean.ProjectItem
 import com.seasonfif.jetpack.viewmodel.HotProjectVM
+import com.seasonfif.jetpack.viewmodel.HotProjectVM.Companion.REFRESH_MODE
 
 class DashboardFragment : BaseFragment() {
 
+    private val TAG = DashboardFragment.javaClass.simpleName
     private lateinit var dashboardViewModel: DashboardViewModel
     private lateinit var refreshLayout: SmartRefreshLayout
     private lateinit var recycler: RecyclerView
@@ -52,26 +55,51 @@ class DashboardFragment : BaseFragment() {
         refreshLayout.setEnableRefresh(true)
         refreshLayout.setOnRefreshListener {
             hotProjectVM.refresh()
-            hotProjectVM.contentList.observe(this,
-                Observer<List<ProjectItem>> {
-                    if (it?.size!! > 0){
-                        refreshLayout.finishRefresh(true)
-                    }else{
-                        refreshLayout.finishRefresh(false)
-                    }
-                    hotProjectAdapter.setNewData(it)
-                })
         }
         recycler.layoutManager = LinearLayoutManager(activity)
 
         hotProjectAdapter = HotProjectAdapter(R.layout.item_hot_project)
+        /*hotProjectAdapter.isUpFetchEnable = true
+        hotProjectAdapter.setStartUpFetchPosition(1)
+        hotProjectAdapter.setUpFetchListener {
+
+        }*/
+        hotProjectAdapter.setOnLoadMoreListener({
+            hotProjectVM.loadmore()
+        }, recycler)
 
         recycler.adapter = hotProjectAdapter
 
         hotProjectVM.refresh()
         hotProjectVM.contentList.observe(this,
             Observer<List<ProjectItem>> {
-                hotProjectAdapter.setNewData(it)
+                Log.e(TAG, "update view, mode=${hotProjectVM.mode}")
+
+                if (it == null){
+                    Log.e(TAG, "网络请求异常")
+                    if (hotProjectVM.mode == REFRESH_MODE){
+                        refreshLayout.finishRefresh(false)
+                    }else{
+                        hotProjectAdapter.loadMoreFail()
+                    }
+
+                }else{
+                    if (hotProjectVM.mode == REFRESH_MODE){
+                        if (it?.size!! > 0){
+                            refreshLayout.finishRefresh(true)
+                        }else{
+                            refreshLayout.finishRefresh(false)
+                        }
+                        hotProjectAdapter.setNewData(it)
+                    }else{
+                        if (it?.size!! > 0){
+                            hotProjectAdapter.loadMoreComplete()
+                        }else{
+                            hotProjectAdapter.loadMoreFail()
+                        }
+                        hotProjectAdapter.addData(it!!)
+                    }
+                }
             })
 
         return root
