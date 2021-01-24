@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.seasonfif.jetpack.R
@@ -59,11 +60,11 @@ class DashboardFragment : BaseFragment() {
         recycler.layoutManager = LinearLayoutManager(activity)
 
         hotProjectAdapter = HotProjectAdapter(R.layout.item_hot_project)
-        /*hotProjectAdapter.isUpFetchEnable = true
-        hotProjectAdapter.setStartUpFetchPosition(1)
-        hotProjectAdapter.setUpFetchListener {
+        hotProjectAdapter.setOnItemClickListener { adapter, view, position ->
+            val item = hotProjectAdapter.getItem(position)
+            Toast.makeText(activity, item?.title, Toast.LENGTH_SHORT).show()
+        }
 
-        }*/
         hotProjectAdapter.setOnLoadMoreListener({
             hotProjectVM.loadmore()
         }, recycler)
@@ -91,6 +92,8 @@ class DashboardFragment : BaseFragment() {
                             refreshLayout.finishRefresh(false)
                         }
                         hotProjectAdapter.setNewData(it)
+                        //是否打开加载更多，如果当前数据满屏则会打开
+                        hotProjectAdapter.disableLoadMoreIfNotFullPage(recycler)
                     }else{
                         if (it?.size!! > 0){
                             hotProjectAdapter.loadMoreComplete()

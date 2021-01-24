@@ -13,7 +13,7 @@ class HotProjectRepository {
 
     suspend fun getHotProjectList(page: Int, isLocal: Boolean) : ProjectData =
         if (isLocal){
-            Thread.sleep(5000)
+            Thread.sleep(3000)
             Utils.string2bean(NetConstants.LOCAL, ProjectData::class.java)
         }else{
             getHotProjectList(page).getProjects()
