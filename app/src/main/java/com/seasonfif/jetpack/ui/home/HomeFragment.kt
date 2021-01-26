@@ -15,6 +15,7 @@ import com.seasonfif.jetpack.base.BaseFragment
 import com.seasonfif.jetpack.bean.ProjectData
 import com.seasonfif.jetpack.net.ApiException
 import com.seasonfif.jetpack.net.ResultEntry
+import com.seasonfif.jetpack.repository.HotProjectRepository
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -94,13 +95,15 @@ class HomeFragment : BaseFragment() {
 
             try {
                 delay(3000)
-                textView.text = readFile(1)
+                textView.text = readFile(0)
                 homeViewModel.isLoading.value = false
 
             }catch (e: Exception){
                 textView.text =e.message
                 homeViewModel.isLoading.value = false
             }
+
+//            getProjects()
 
 //            homeViewModel.isLoading.value = false
 //            textView.text = resultEntry.getProjects().pageCount.toString()
@@ -114,6 +117,23 @@ class HomeFragment : BaseFragment() {
             continuation.resume("io success")
         }else{
             continuation.resumeWithException(ApiException(mode, "io failed"))
+        }
+    }
+
+
+    private suspend fun getProjects(){
+        var projects : ProjectData
+
+        try {
+            delay(3000)
+            projects = HotProjectRepository().getProjectList(1)
+            textView.text = projects.offset.toString()
+            homeViewModel.isLoading.value = false
+        }catch(e: Exception){
+
+            delay(3000)
+            textView.text = e.message
+            homeViewModel.isLoading.value = false
         }
     }
 }
